@@ -7,12 +7,12 @@ var config = {
   messagingSenderId: "432439668274"
 };
 firebase.initializeApp(config);
-console.log("Loading Javascript")
 let d = new Date()
 var timestamp = d.getTime()
 
 var app = new Vue({
   el: '#app',
+  mode: 'production',
   data: {
     finished: false,
     eligable: false,
