@@ -7,7 +7,7 @@ var config = {
   messagingSenderId: "432439668274"
 };
 firebase.initializeApp(config);
-
+console.log("Loading Javascript")
 let d = new Date()
 var timestamp = d.getTime()
 
