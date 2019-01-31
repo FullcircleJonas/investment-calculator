@@ -40,7 +40,7 @@ var app = new Vue({
       about: [],
       type: 'Other',
       currentAdvance: {bool: false, amount: 0},
-      infocrmation: {
+      information: {
         name: '',
         mail: '',
         phone: '',
