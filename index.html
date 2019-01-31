@@ -7,7 +7,126 @@
   <title>Investment Calculator</title>
   <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="./main.css"/>
+  <style>
+    .rel {
+      position: relative;
+    }
+
+    .fade-enter-active {
+      transition: opacity .9s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+    }
+
+    .selector-box {
+      outline: solid 1px rgb(214, 214, 214);
+      -moz-outline-radius:25px;
+    }
+
+    .selector-box:hover {
+      outline: solid 2px #E8CD00;
+      -moz-outline-radius:25px;
+      font-weight: bold;
+    }
+
+    .pointer {
+      cursor: pointer;
+    }
+
+    .minH {
+      min-height: 50vh;
+    }
+
+    input {
+      padding: 10px; 
+      text-align: center;
+      text-decoration: none;
+      background: none;
+      border: none;
+      outline: solid 1px rgb(214, 214, 214);
+      -moz-outline-radius:25px;
+    }
+
+    input:focus {
+      text-decoration: none;
+      background: none;
+      outline: solid 2px #E8CD00;
+      -moz-outline-radius:25px;
+    }
+
+    .btn-empty {
+      padding: 10px; 
+      text-align: center;
+      text-decoration: none;
+      background: none;
+      border: none;
+      outline: solid 1px rgb(214, 214, 214);
+      -moz-outline-radius:25px;
+      display: inline-block;
+    }
+
+    .btn-yellow {
+      padding: 5px 25px; 
+      text-align: center;
+      color: white;
+      background: #E8CD00;
+      border: none;
+      border-radius: 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-yellow:hover {
+      color: black;
+    }
+
+    .btn-empty:hover {
+      text-decoration: none;
+      background: none;
+      outline: solid 2px #E8CD00;
+      -moz-outline-radius:25px;
+      font-weight: bold;
+    }
+
+    .yellow-bg {
+      outline: solid 2px #E8CD00;
+      font-weight: bold;
+    }
+
+    .yellow {
+      color: #E8CD00;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .light-grey {
+      color: rgb(214, 214, 214);
+    }
+
+    .scrollable-menu {
+      height: auto;
+      max-height: 300px;
+      overflow-x: hidden;
+    }
+
+    .eligable {
+      background-color: #E8CD00 !important;
+    }
+
+    .not-eligable {
+      background-color: rgb(245, 64, 47) !important;
+    }
+
+    .nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
