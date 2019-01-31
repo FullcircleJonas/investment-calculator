@@ -1,0 +1,1 @@
+v-bind:class="{ 'yellow-bg': (answers.date.month !== 'Choose a month')}"
