@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Investment Calculator</title>
+  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="./main.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="row minH justify-content-center py-5">
+        <div class="col-12" >
+            <div id="app" class="py-5 px-3 text-center" v-bind:class="{ 'eligable': (finished && eligable), 'not-eligable': (finished && !eligable)}">
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <!-- Step 1 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 1">
+                      <h2>Your merchant cash advance is waiting.</h2>
+                      <div class="row mt-5 justify-content-around">
+                        <input class="col-6 bold" type="number" placeholder="Amount seeking" v-model="answers.seeking">
+                        <button class="col-4  btn-yellow" v-on:click="isValid">SEE YOUR OPTIONS</button>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 1 -->
+
+                  <!-- Step 2 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 2">
+                      <h2>How's your credit score?</h2>
+                      <div class="row mt-5">
+                          <div class="col-4 p-2 pointer" v-on:click="credit(score.score)" v-for="(score, index) in creditScore" :key="index">
+                            <div class="selector-box d-flex align-items-center justify-content-center p-3">{{score.desc}}</div>
+                          </div>
+                      </div>
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 2 -->
+
+                  <!-- Step 3 -->
+                  <transition name="fade" >
+                      <div v-if="currentStep === 3">
+                          <h2>When did you start your business?</h2>
+                          <div class="row justify-content-center mt-5">
+                              <div class="dropdown col-5 row pr-3">
+                                <button v-bind:class="{ 'yellow-bg': (answers.date.month !== 'Choose a month')}" v-html="answers.date.month" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {{answers.date.month}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <div v-for="(month, index) in months" :key="index" class="dropdown-item" v-on:click="selectMonth(month)">{{month}}</div>
+                                </div>
+                              </div>
+
+                              <div class="col-4 pl-3">
+                                <input v-bind:class="{ 'yellow-bg': (answers.date.year !== '')}" v-model="answers.date.year" type="text" placeholder="Year">
+                              </div>
+                          </div>
+                          <p class="yellow bold mt-3 pointer" v-on:click="notStarted">I haven't started yet</p>
+                          
+
+                          <div class="row justify-content-between mt-5 align-items-center">
+                            <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                            <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                          </div>
+                      </div>
+                    </transition>
+                  <!-- End Step 3 -->
+
+                  <!-- Step 4 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 4">
+                      <h2>What's your monthly revenue?</h2>
+                      <div class="row mt-5">
+                          <div class="col-4 p-2 pointer" v-on:click="revenue(rev.score)" v-for="(rev, index) in revenueData" :key="index">
+                            <div class="selector-box d-flex align-items-center justify-content-center p-3">{{rev.desc}}</div>
+                          </div>
+                      </div>
+
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 4 -->
+
+                    <!-- Step 5 -->
+                    <transition name="fade" >
+                      <div v-if="currentStep === 5">
+                          <h2>Which best describes your business?</h2>
+                          <div class="row justify-content-center mt-5">
+                              <div class="dropdown col-10 row pr-3">
+                                <button v-bind:class="{ 'yellow-bg': (answers.industry !== 'Choose an industry')}" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {{answers.industry}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <div v-for="(ind, index) in industryData" :key="index" class="dropdown-item" v-on:click="industry(ind)">{{ind}}</div>
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="row justify-content-between mt-5 align-items-center">
+                            <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                            <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                          </div>
+                      </div>
+                    </transition>
+                  <!-- End Step 5 -->
+
+                  <!-- Step 6 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 6">
+                      <h2>Let's learn a little about your business?</h2>
+                      <h4 class="mt-4">Select all that apply</h4>
+                      <div class="row justify-content-center'">
+                          <div class="col-4 p-2 pointer"  v-on:click="selectAbout(ab)" v-for="(ab, index) in aboutData" :key="index">
+                            <div v-bind:class="{ 'yellow-bg': (answers.about.indexOf(ab) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{ab}}</div>
+                          </div>
+                      </div>
+
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                        <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 6 -->
+
+                  <!-- Step 7 -->
+                  <transition name="fade" >
+                      <div v-if="currentStep === 7">
+                          <h2>Which state is your business in?</h2>
+                          <div class="row justify-content-center mt-5">
+                              <div class="dropdown col-10 row pr-3">
+                                <button v-bind:class="{ 'yellow-bg': (answers.state !== 'Choose a state')}" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {{answers.state}}
+                                </button>
+                                <div class="dropdown-menu scrollable-menu" boundary="window" aria-labelledby="dropdownMenuButton">
+                                  <div v-for="(state, index) in stateData" :key="index" class="dropdown-item" v-on:click="selectState(state)">{{state}}</div>
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="row justify-content-between mt-5 align-items-center">
+                            <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                            <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                          </div>
+                      </div>
+                    </transition>
+                  <!-- End Step 7 -->
+
+                  <!-- Step 8 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 8">
+                      <h2>What purpose would your loan serve?</h2>
+                      <h4 class="mt-4">Select all that apply</h4>
+                      <div class="row justify-content-center'">
+                          <div class="col-4 p-2 pointer" v-on:click="selectPurpose(pur)" v-for="(pur, index) in purposeData" :key="index">
+                            <div v-bind:class="{ 'yellow-bg': (answers.purpose.indexOf(pur) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{pur}}</div>
+                          </div>
+                      </div>
+
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                        <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 8 -->
+
+                  <!-- Step 9 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 9">
+                      <h2>What type of entity is your business?</h2>
+                      <div class="row justify-content-center  mt-5">
+                          <div class="col-4 p-2 pointer" v-on:click="selectType(type)" v-for="(type, index) in typeBusiness" :key="index">
+                            <div class="selector-box d-flex align-items-center justify-content-center p-3">{{type}}</div>
+                          </div>
+                      </div>
+
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 9 -->
+
+                  <!-- Step 10 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 10">
+                      <h2>Do you have any current cash advance balances?</h2>
+                      <div class="row justify-content-center  mt-5">
+                          <div class="col-4 p-2 pointer" v-on:click="currentAdvance(balance)" v-for="(balance, index) in curBal" :key="index">
+                            <div class="selector-box d-flex align-items-center justify-content-center p-3">{{balance}}</div>
+                          </div>
+                      </div>
+                    <div v-if="enterAmount" class=" d-flex flex-column align-items-center">
+                      <h5 class="mt-4">If yes, how many?</h5>
+                      <div class="col-4 pl-3">
+                        <input v-bind:class="{ 'yellow-bg': (answers.currentAdvance.amount !== 0)}" v-model="answers.currentAdvance.amount" type="number" placeholder="Amount">
+                      </div>
+                    </div>
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                        <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 10 -->
+
+                  <!-- Step 11 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 11" class="text-left">
+                      <h2>Owner Information</h2>
+                      <h5 class="mt-4">Name</h5>
+                      <div class="container">
+                        <div class="row">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.name !== '')}" v-model="answers.information.name" type="text" placeholder="Your Name">
+                        </div>
+                      </div>
+                      
+                      <h5 class="mt-4">E-Mail</h5>
+                      <div class="container">
+                        <div class="row">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
+                        </div>
+                      </div>
+
+                      <h5 class="mt-4">Phone Number</h5>
+                      <div class="container">
+                        <div class="row">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.phone !== '')}" v-model="answers.information.phone" type="text" placeholder="Enter your phone number here">
+                        </div>
+                      </div>
+                      <h5 class="mt-4">Owner Address</h5>
+                      <div class="container">
+                        <div class="row">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.address !== '')}" v-model="answers.information.address" type="text" placeholder="Enter your address here">
+                        </div>
+
+                        <div class="row mt-3">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.city !== '')}" v-model="answers.information.city" type="text" placeholder="City">
+                        </div>
+
+                        <div class="row mt-3">
+                            <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.zip !== '')}" v-model="answers.information.zip" type="text" placeholder="ZIP Code">
+                        </div>
+                      </div>
+                      
+                      <div class="row justify-content-between mt-5 align-items-center">
+                        <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
+                        <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                      </div>
+                    </div>
+                  </transition>
+                  <!-- End Step 11 -->
+
+                  <!-- Step 12 -->
+                  <transition name="fade">
+                    <div v-if="currentStep === 12">
+                      <h2>You are pre-approved for</h2>
+                      <h2>${{eligableAmount}}</h2>
+                      <button class="btn-empty">GET YOUR RATE</button>
+                    </div>
+                  </transition>
+                  <!-- End Step 12 -->
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyBlssml3dUU3lcQnVj4qIUY7MSjlpke03w",
+      authDomain: "capitalaccessintl.firebaseapp.com",
+      databaseURL: "https://capitalaccessintl.firebaseio.com",
+      projectId: "capitalaccessintl",
+      storageBucket: "capitalaccessintl.appspot.com",
+      messagingSenderId: "432439668274"
+    };
+    firebase.initializeApp(config);
+
+    let d = new Date()
+    var timestamp = d.getTime()
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        finished: false,
+        eligable: false,
+        eligableAmount: 0,
+        currentStep: 1,
+        enterAmount: false,
+        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        creditScore: [{desc: '499 or below', score: 499}, {desc: '500 - 599', score: 599}, {desc: '600 - 649', score: 649}, {desc: '650 - 679', score: 679}, {desc: '680 - 719', score: 719}, {desc: '720 or above', score: 720}],
+        revenueData: [{desc: '$15k - $30k', score: 30000}, {desc: '$30k - $60k', score: 60000}, {desc: '$60k - $120k', score: 120000}, {desc: '$120k - $240k', score: 240000}, {desc: '$240k - $500', score: 500000}, {desc: '$500k+', score: 501000}],
+        purposeData: ["Expansion", "Working Capital", "Payroll", "Purchase a Business", "Purchase a Franchise", "Equipment", "Real Estate", "Buy Out a Partner", "Start a Business", "Finance Accountants Receivable", "Other"],
+        industryData: ["Construction", "Medical", "Dental", "Hospitality", "Restaurant", "Marijuana", "Other Retail (please define in the comments)", "Other service (please define in the comments)"],
+        typeBusiness: ["LLC", "Corporation", "Sole Proprietor", "Legal Partnership"],
+        curBal: ["Yes", "No"],
+        aboutData: ["Accept Credit Cards", "Had a Backrupcy", "Is a Franchise", "Invoice Customers", "Non-profit", "Seasonal", "Use Accounting Software"],
+        stateData: ["Alabama","Alaska","American Samoa","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","District Of Columbia","Federated States Of Micronesia","Florida","Georgia","Guam","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Marshall Islands","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Northern Mariana Islands","Ohio","Oklahoma","Oregon","Palau","Pennsylvania","Puerto Rico","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virgin Islands","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
+        message: 'Hello Vue!',
+        answers: {
+          seeking: null,
+          credit: 499,
+          date: {month: "Choose a month", year: "", started: true},
+          revenue: 30,
+          industry: 'Choose an industry',
+          state: 'Choose a state',
+          purpose: [],
+          about: [],
+          type: 'Other',
+          currentAdvance: {bool: false, amount: 0},
+          infocrmation: {
+            name: '',
+            mail: '',
+            phone: '',
+            address: '',
+            city: '',
+            zip: ''
+          }
+        },
+        dateEmpty: true
+      },
+      computed: {
+        checkDate() {
+          if(this.answers.date.month === "Choose a month") return this.dateEmpty = true
+          else return this.dateEmpty = false
+        }
+      },
+      methods: {
+        goBack() {
+          this.finished = false
+          this.currentStep -= 1
+        },
+        credit(score) {
+          this.answers.credit = score
+          this.currentStep += 1
+        },
+        revenue(score) {
+          this.currentStep += 1
+          this.answers.revenue = score
+        },
+        selectMonth(month) {
+          this.answers.date.month = month
+        },
+        selectState(state) {
+          this.answers.state = state
+        },
+        industry(industry) {
+          this.answers.industry = industry
+        },
+        notStarted() {
+          this.answers.date.started = false
+          this.currentStep += 1
+        },
+        selectPurpose(purpose) {
+          if(this.answers.purpose.length !== 0) {
+            let index = this.answers.purpose.indexOf(purpose)
+            if(index === -1) this.answers.purpose.push(purpose)
+            else this.answers.purpose.splice(index, 1)
+          } else this.answers.purpose.push(purpose)
+        },
+        currentAdvance(yesno) {
+          this.answers.currentAdvance.bool = yesno
+          if(yesno === "No") {
+            this.currentStep += 1
+          }
+          else this.enterAmount = true
+        },
+        selectType(type) {
+          this.answers.type = type
+          this.currentStep += 1
+        },
+        selectAbout(about) {
+          if(this.answers.about.length !== 0) {
+            let index = this.answers.about.indexOf(about)
+            if(index === -1) this.answers.about.push(about)
+            else this.answers.about.splice(index, 1)
+          } else this.answers.about.push(about)
+        },
+        isValid() {
+          this.finished = false
+          if(this.currentStep === 1) {
+            if(this.answers.seeking !== null) this.currentStep += 1
+          } else if(this.currentStep === 3) {
+            if(this.answers.date.month !== "Choose a month" && this.answers.date.year !== "") this.currentStep += 1
+          } else if(this.currentStep === 5) {
+            if(this.answers.industry !== "Choose an industry") this.currentStep += 1
+          } else if(this.currentStep === 6) {
+            if(this.answers.about.length !== 0) this.currentStep += 1
+          } else if(this.currentStep === 7) {
+            if(this.answers.state !== "Choose a state") this.currentStep += 1
+          } else if(this.currentStep === 8) {
+            if(this.answers.purpose.length !== 0) this.currentStep += 1
+          } else if(this.currentStep === 10) {
+            if(this.answers.currentAdvance.bool === "Yes" && this.answers.currentAdvance.amount !== 0) this.currentStep += 1
+          } else if(this.currentStep === 11) {
+            if(this.answers.information.name !== '' && this.answers.information.mail !== '' && this.answers.information.phone !== '' && this.answers.information.address !== '' && this.answers.information.city !== '' && this.answers.information.zip !== '') {
+              console.log(this.answers.credit)
+              var eligable = 0
+              if(this.answers.credit === 499) { 
+                eligable = .5 * this.answers.revenue 
+                console.log("Eligable for $"+ (.5 * this.answers.revenue).toString())
+              }
+              else if(this.answers.credit === 599) {
+                eligable = .65 * this.answers.revenue
+                console.log("Eligable for $"+ (.65 * this.answers.revenue).toString())
+              }
+              else if(this.answers.credit === 649) {
+                eligable = .75 * this.answers.revenue
+                console.log("Eligable for $"+ (.75 * this.answers.revenue).toString())
+              }
+              else if(this.answers.credit === 679) {
+                eligable = .85 * this.answers.revenue
+                console.log("Eligable for $"+ (.85 * this.answers.revenue).toString())
+              }
+              else if(this.answers.credit === 719) {
+                eligable = this.answers.revenue
+                console.log("Eligable for $"+ (this.answers.revenue).toString() )
+              }
+              else if(this.answers.credit === 720) {
+                eligable = 1.2 * this.answers.revenue
+                console.log("Eligable for $" + (1.2 * this.answers.revenue).toString())
+              }
+              
+              if(eligable > this.answers.seeking) this.eligable = true
+              else this.eligable = false
+              
+              this.eligableAmount = eligable
+
+              let self = this
+
+              firebase.auth().signInWithEmailAndPassword("joweidner@live.com", "wei92dner").then(function(msg) {
+                console.log("Logged In Successfully")
+                firebase.database().ref("answers/" + timestamp).set(self.answers)
+                firebase.database().ref("last").update(self.answers)
+              }).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
+              });
+
+              
+              this.finished = true
+              this.currentStep += 1
+            }
+          }
+        }
+      }
+    })
+  </script>
+
+  </body>
+</html>
