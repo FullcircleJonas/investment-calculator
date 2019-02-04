@@ -46,7 +46,8 @@ var app = new Vue({
         address: '',
         city: '',
         zip: ''
-      }
+      },
+      eligable: null
     },
     dateEmpty: true
   },
@@ -158,6 +159,7 @@ var app = new Vue({
           else this.eligable = false
           
           this.eligableAmount = eligable
+          this.answers.eligable = eligable
 
           let self = this
 
