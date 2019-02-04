@@ -206,36 +206,36 @@
             <h2>Owner Information</h2>
             <h5 class="mt-4">Name</h5>
             <div class="container">
-              <div class="row">
+              <div class="row justify-content-center">
                   <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.name !== '')}" v-model="answers.information.name" type="text" placeholder="Your Name">
               </div>
             </div>
             
             <h5 class="mt-4">E-Mail</h5>
             <div class="container">
-              <div class="row">
+              <div class="row justify-content-center">
                   <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
               </div>
             </div>
 
             <h5 class="mt-4">Phone Number</h5>
             <div class="container">
-              <div class="row">
+              <div class="row justify-content-center">
                   <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.phone !== '')}" v-model="answers.information.phone" type="text" placeholder="Enter your phone number here">
               </div>
             </div>
             <h5 class="mt-4">Owner Address</h5>
             <div class="container">
-              <div class="row">
+              <div class="row justify-content-center">
                   <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.address !== '')}" v-model="answers.information.address" type="text" placeholder="Enter your address here">
               </div>
 
               <div class="row mt-3">
-                  <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.city !== '')}" v-model="answers.information.city" type="text" placeholder="City">
+                  <input class="text-left col-8 justify-content-center" v-bind:class="{ 'yellow-bg': (answers.information.city !== '')}" v-model="answers.information.city" type="text" placeholder="City">
               </div>
 
               <div class="row mt-3">
-                  <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.zip !== '')}" v-model="answers.information.zip" type="text" placeholder="ZIP Code">
+                  <input class="text-left col-8 justify-content-center" v-bind:class="{ 'yellow-bg': (answers.information.zip !== '')}" v-model="answers.information.zip" type="text" placeholder="ZIP Code">
               </div>
             </div>
             
