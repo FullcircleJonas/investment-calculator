@@ -1,3 +1,8 @@
+#app {
+  color: black;
+  
+}
+
 .rel {
   position: relative;
 }
@@ -26,7 +31,7 @@
 }
 
 .minH {
-  min-height: 50vh;
+  min-height: 500px;
 }
 
 input {
