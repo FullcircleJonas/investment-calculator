@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Investment Calculator</title>
-  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="./main.css" />
 </head>
@@ -13,7 +13,7 @@
   <div class="container">
     <div class="row minH justify-content-center py-5">
         <div class="col-12" >
-            <div id="app" class="py-5 px-3 text-center" v-bind:class="{ 'eligable': (finished && eligable), 'not-eligable': (finished && !eligable)}">
+            <div id="app" class="py-5 px-3 text-center">
               <div class="row justify-content-center">
                 <div class="col-8">
                   <!-- Step 1 -->
@@ -99,7 +99,7 @@
                                 <button v-bind:class="{ 'yellow-bg': (answers.industry !== 'Choose an industry')}" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   {{answers.industry}}
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
                                   <div v-for="(ind, index) in industryData" :key="index" class="dropdown-item" v-on:click="industry(ind)">{{ind}}</div>
                                 </div>
                               </div>
@@ -123,6 +123,7 @@
                             <div v-bind:class="{ 'yellow-bg': (answers.about.indexOf(ab) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{ab}}</div>
                           </div>
                       </div>
+                      <p class="yellow bold mt-3 pointer" v-on:click="nonApply">Non apply</p>
 
                       <div class="row justify-content-between mt-5 align-items-center">
                         <p class="bold pointer mb-0 light-grey" v-on:click="goBack">< Go Back</p>
@@ -263,13 +264,35 @@
 
                   <!-- Step 12 -->
                   <transition name="fade">
-                    <div v-if="currentStep === 12">
-                      <h2>You are pre-approved for</h2>
-                      <h2>${{eligableAmount}}</h2>
-                      <button class="btn-empty">GET YOUR RATE</button>
+                    <div v-if="currentStep === 12" class="p-5 yellow-12">
+                      
+                      <div class="row justify-content-center">
+                        <div class="col-8">
+                          <h2 class="mt-5 white">You are pre-approved for</h2>
+                        </div>
+                        <div class="col-8">
+                          <h2 class="my-4 present">$ {{eligableAmount}}</h2>
+                        </div>
+                      </div>
+                      
+                      <button class="btn-big mb-5 pointer" v-on:click="currentStep += 1">Get your Rate</button>
                     </div>
                   </transition>
                   <!-- End Step 12 -->
+
+                  <!-- Step 13 -->
+                  <transition name="fade">
+                      <div v-if="currentStep === 13" class="p-5 yellow-12">
+                        
+                        <div class="row justify-content-center">
+                          <div class="col-8">
+                            <h2 class="mt-5 white">Reviewing your file...</h2>
+                            <h4 class="white mb-5">We'll contact you shortly about your rate.</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </transition>
+                    <!-- End Step 13 -->
                 </div>
               </div>
             </div>

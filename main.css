@@ -11,11 +11,12 @@
 
 .selector-box {
   outline: solid 1px rgb(214, 214, 214);
-  -moz-outline-radius:25px;
+  -moz-outline-radius: 25px;
+  -webkit-outline-radius: 25px;
 }
 
 .selector-box:hover {
-  outline: solid 2px #E8CD00;
+  outline: solid 2px #F4BD19;
   -moz-outline-radius:25px;
   font-weight: bold;
 }
@@ -41,7 +42,7 @@ input {
 input:focus {
   text-decoration: none;
   background: none;
-  outline: solid 2px #E8CD00;
+  outline: solid 2px #F4BD19;
   -moz-outline-radius:25px;
 }
 
@@ -60,7 +61,7 @@ input:focus {
   padding: 5px 25px; 
   text-align: center;
   color: white;
-  background: #E8CD00;
+  background: #F4BD19;
   border: none;
   border-radius: 25px;
   text-transform: uppercase;
@@ -75,18 +76,28 @@ input:focus {
 .btn-empty:hover {
   text-decoration: none;
   background: none;
-  outline: solid 2px #E8CD00;
+  outline: solid 2px #F4BD19;
   -moz-outline-radius:25px;
   font-weight: bold;
 }
 
 .yellow-bg {
-  outline: solid 2px #E8CD00;
+  outline: solid 2px #F4BD19;
+  font-weight: bold;
+}
+
+.yellow-12 {
+  background-color: #F4BD19;
+  border-radius: 20px;
   font-weight: bold;
 }
 
 .yellow {
-  color: #E8CD00;
+  color: #F4BD19;
+}
+
+.white {
+  color: white !important;
 }
 
 .bold {
@@ -103,16 +114,28 @@ input:focus {
   overflow-x: hidden;
 }
 
-.eligable {
-  background-color: #E8CD00 !important;
-}
-
-.not-eligable {
-  background-color: rgb(245, 64, 47) !important;
-}
-
 .nav {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.present {
+  background-color: white;
+  color: black;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.btn-big {
+  padding: 10px; 
+  text-align: center;
+  text-decoration: none;
+  background: none;
+  border: solid 3px white;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-radius: 20px;
+  display: inline-block;
 }

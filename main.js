@@ -14,7 +14,6 @@ var app = new Vue({
   el: '#app',
   mode: 'production',
   data: {
-    finished: false,
     eligable: false,
     eligableAmount: 0,
     currentStep: 1,
@@ -23,7 +22,7 @@ var app = new Vue({
     creditScore: [{desc: '499 or below', score: 499}, {desc: '500 - 599', score: 599}, {desc: '600 - 649', score: 649}, {desc: '650 - 679', score: 679}, {desc: '680 - 719', score: 719}, {desc: '720 or above', score: 720}],
     revenueData: [{desc: '$15k - $30k', score: 30000}, {desc: '$30k - $60k', score: 60000}, {desc: '$60k - $120k', score: 120000}, {desc: '$120k - $240k', score: 240000}, {desc: '$240k - $500', score: 500000}, {desc: '$500k+', score: 501000}],
     purposeData: ["Expansion", "Working Capital", "Payroll", "Purchase a Business", "Purchase a Franchise", "Equipment", "Real Estate", "Buy Out a Partner", "Start a Business", "Finance Accountants Receivable", "Other"],
-    industryData: ["Construction", "Medical", "Dental", "Hospitality", "Restaurant", "Marijuana", "Other Retail (please define in the comments)", "Other service (please define in the comments)"],
+    industryData: ["Agriculture, Forestry, Fishing and Hunting", "Arts, Entertainment, and Recreation", "Adult Entertainment", "Gambling", "Automobile Dealers & Parts", "Construction", "Education", "Finance and Insurance", "Healthcare", "Social Assistance", "IT, Media, or Publishing", "Legal Services", "Mining (except Oil and Gas)", "Oil and Gas Extraction", "Manufacturing", "Political, Governmental, or Public Organizations", "Real Estate", "Religious Organizations", "Restaurants and Food Services", "Retail Stores", "Firearm Sales", "Gas Stations", "Transportation and Warehousing", "Freight Trucking", "Travel Agencies", "Utilities", "Wholesale Trade", "All Others"],
     typeBusiness: ["LLC", "Corporation", "Sole Proprietor", "Legal Partnership"],
     curBal: ["Yes", "No"],
     aboutData: ["Accept Credit Cards", "Had a Backrupcy", "Is a Franchise", "Invoice Customers", "Non-profit", "Seasonal", "Use Accounting Software"],
@@ -59,7 +58,6 @@ var app = new Vue({
   },
   methods: {
     goBack() {
-      this.finished = false
       this.currentStep -= 1
     },
     credit(score) {
@@ -81,6 +79,10 @@ var app = new Vue({
     },
     notStarted() {
       this.answers.date.started = false
+      this.currentStep += 1
+    },
+    nonApply() {
+      this.answers.about = ['Non Apply']
       this.currentStep += 1
     },
     selectPurpose(purpose) {
@@ -109,7 +111,6 @@ var app = new Vue({
       } else this.answers.about.push(about)
     },
     isValid() {
-      this.finished = false
       if(this.currentStep === 1) {
         if(this.answers.seeking !== null) this.currentStep += 1
       } else if(this.currentStep === 3) {
@@ -126,31 +127,31 @@ var app = new Vue({
         if(this.answers.currentAdvance.bool === "Yes" && this.answers.currentAdvance.amount !== 0) this.currentStep += 1
       } else if(this.currentStep === 11) {
         if(this.answers.information.name !== '' && this.answers.information.mail !== '' && this.answers.information.phone !== '' && this.answers.information.address !== '' && this.answers.information.city !== '' && this.answers.information.zip !== '') {
-          console.log(this.answers.credit)
+          // console.log(this.answers.credit)
           var eligable = 0
           if(this.answers.credit === 499) { 
             eligable = .5 * this.answers.revenue 
-            console.log("Eligable for $"+ (.5 * this.answers.revenue).toString())
+            // console.log("Eligable for $"+ (.5 * this.answers.revenue).toString())
           }
           else if(this.answers.credit === 599) {
             eligable = .65 * this.answers.revenue
-            console.log("Eligable for $"+ (.65 * this.answers.revenue).toString())
+            // console.log("Eligable for $"+ (.65 * this.answers.revenue).toString())
           }
           else if(this.answers.credit === 649) {
             eligable = .75 * this.answers.revenue
-            console.log("Eligable for $"+ (.75 * this.answers.revenue).toString())
+            // console.log("Eligable for $"+ (.75 * this.answers.revenue).toString())
           }
           else if(this.answers.credit === 679) {
             eligable = .85 * this.answers.revenue
-            console.log("Eligable for $"+ (.85 * this.answers.revenue).toString())
+            // console.log("Eligable for $"+ (.85 * this.answers.revenue).toString())
           }
           else if(this.answers.credit === 719) {
             eligable = this.answers.revenue
-            console.log("Eligable for $"+ (this.answers.revenue).toString() )
+            // console.log("Eligable for $"+ (this.answers.revenue).toString() )
           }
           else if(this.answers.credit === 720) {
             eligable = 1.2 * this.answers.revenue
-            console.log("Eligable for $" + (1.2 * this.answers.revenue).toString())
+            // console.log("Eligable for $" + (1.2 * this.answers.revenue).toString())
           }
           
           if(eligable > this.answers.seeking) this.eligable = true
@@ -170,9 +171,6 @@ var app = new Vue({
             var errorMessage = error.message;
             // ...
           });
-
-          
-          this.finished = true
           this.currentStep += 1
         }
       }
