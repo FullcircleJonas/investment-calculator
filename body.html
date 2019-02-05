@@ -1,6 +1,6 @@
 <div id="app" class="py-5 px-3 text-center black minH">
     <div class="row justify-content-center m-0">
-      <div class="col-8">
+      <div class="col-10">
         <!-- Step 1 -->
         <transition name="fade">
           <div v-if="currentStep === 1">
@@ -102,7 +102,7 @@
         <transition name="fade">
           <div v-if="currentStep === 6">
             <h2 class="black center">Let's learn a little about your business?</h2>
-            <h4 class="mt-4 black center">Select all that apply</h4>
+            <h3 class="mt-4 black center">Select all that apply</h3>
             <div class="row justify-content-center'">
                 <div class="col-4 p-2 pointer"  v-on:click="selectAbout(ab)" v-for="(ab, index) in aboutData" :key="index">
                   <div v-bind:class="{ 'yellow-bg': (answers.about.indexOf(ab) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{ab}}</div>
@@ -145,7 +145,7 @@
         <transition name="fade">
           <div v-if="currentStep === 8">
             <h2 class="black center">What purpose would your loan serve?</h2>
-            <h4 class="mt-4 black center">Select all that apply</h4>
+            <h3 class="mt-4 black center">Select all that apply</h3>
             <div class="row justify-content-center'">
                 <div class="col-4 p-2 pointer" v-on:click="selectPurpose(pur)" v-for="(pur, index) in purposeData" :key="index">
                   <div v-bind:class="{ 'yellow-bg': (answers.purpose.indexOf(pur) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{pur}}</div>
