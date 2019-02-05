@@ -51,6 +51,9 @@ var app = new Vue({
     },
     dateEmpty: true
   },
+  mounted() {
+    this.industryData.sort()
+  },
   computed: {
     checkDate() {
       if(this.answers.date.month === "Choose a month") return this.dateEmpty = true
@@ -60,6 +63,15 @@ var app = new Vue({
   methods: {
     goBack() {
       this.currentStep -= 1
+    },
+    numberEdit(event) {
+      if(Number(event.key) >= 0 && Number(event.key) <= '9') {
+        var num = this.answers.seeking.replace(/,/gi, "");
+        num = num.replace('$', "")
+        var num2 = num.split(/(?=(?:\d{3})+$)/).join(",");
+        this.answers.seeking = '$' + num2
+      }
+      else this.answers.seeking = this.answers.seeking.substring(0, this.answers.seeking.length - 1);
     },
     credit(score) {
       this.answers.credit = score
