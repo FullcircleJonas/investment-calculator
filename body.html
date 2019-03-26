@@ -15,7 +15,25 @@
 
         <!-- Step 2 -->
         <transition name="fade">
-          <div v-if="currentStep === 2">
+            <div v-if="currentStep === 2">
+                <h2 class="black center">What is your email address?</h2>
+                <div class="container">
+                  <div class="row justify-content-center">
+                      <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
+                  </div>
+                </div>
+
+                <div class="row justify-content-between mt-5 align-items-center">
+                  <p class="bold pointer mb-0 light-grey normal" v-on:click="goBack">< Go Back</p>
+                  <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                </div>
+            </div>
+        </transition>
+        <!-- End Step 2 -->
+
+        <!-- Step 2 -->
+        <transition name="fade">
+          <div v-if="currentStep === 3">
             <h2 class="black center">How's your credit score?</h2>
             <div class="row mt-5">
                 <div class="col-12 col-md-4 p-2 pointer" v-on:click="credit(score.score)" v-for="(score, index) in creditScore" :key="index">
@@ -31,7 +49,7 @@
 
         <!-- Step 3 -->
         <transition name="fade" >
-            <div v-if="currentStep === 3">
+            <div v-if="currentStep === 4">
                 <h2 class="black center">When did you start your business?</h2>
                 <div class="row justify-content-center mt-5">
                     <div class="dropdown col-12 col-md-5 row pr-md-3">
@@ -60,7 +78,7 @@
 
         <!-- Step 4 -->
         <transition name="fade">
-          <div v-if="currentStep === 4">
+          <div v-if="currentStep === 5">
             <h2 class="black center">What's your monthly revenue?</h2>
             <div class="row mt-5">
                 <div class="col-12 col-md-4 p-2 pointer" v-on:click="revenue(rev.score)" v-for="(rev, index) in revenueData" :key="index">
@@ -77,7 +95,7 @@
 
           <!-- Step 5 -->
           <transition name="fade" >
-            <div v-if="currentStep === 5">
+            <div v-if="currentStep === 6">
                 <h2 class="black center">Which best describes your business?</h2>
                 <div class="row justify-content-center mt-5">
                     <div class="dropdown col-12 col-md-10 row pr-3">
@@ -100,7 +118,7 @@
 
         <!-- Step 6 -->
         <transition name="fade">
-          <div v-if="currentStep === 6">
+          <div v-if="currentStep === 7">
             <h2 class="black center">Let's learn a little about your business?</h2>
             <h3 class="mt-4 black center">Select all that apply</h3>
             <div class="row justify-content-center'">
@@ -120,7 +138,7 @@
 
         <!-- Step 7 -->
         <transition name="fade" >
-            <div v-if="currentStep === 7">
+            <div v-if="currentStep === 8">
                 <h2 class="black center">Which state is your business in?</h2>
                 <div class="row justify-content-center mt-5">
                     <div class="dropdown col-12 col-md-10 row pr-3">
@@ -143,7 +161,7 @@
 
         <!-- Step 8 -->
         <transition name="fade">
-          <div v-if="currentStep === 8">
+          <div v-if="currentStep === 9">
             <h2 class="black center">What purpose would your loan serve?</h2>
             <h3 class="mt-4 black center">Select all that apply</h3>
             <div class="row justify-content-center'">
@@ -162,7 +180,7 @@
 
         <!-- Step 9 -->
         <transition name="fade">
-          <div v-if="currentStep === 9">
+          <div v-if="currentStep === 10">
             <h2 class="black center">What type of entity is your business?</h2>
             <div class="row justify-content-center  mt-5">
                 <div class="col-6 col-md-4 p-2 pointer" v-on:click="selectType(type)" v-for="(type, index) in typeBusiness" :key="index">
@@ -179,7 +197,7 @@
 
         <!-- Step 10 -->
         <transition name="fade">
-          <div v-if="currentStep === 10">
+          <div v-if="currentStep === 11">
             <h2 class="black center">Do you have any current cash advance balances?</h2>
             <div class="row justify-content-center  mt-5">
                 <div class="col-6 col-md-4 p-2 pointer" v-on:click="currentAdvance(balance)" v-for="(balance, index) in curBal" :key="index">
@@ -202,19 +220,12 @@
 
         <!-- Step 11 -->
         <transition name="fade">
-          <div v-if="currentStep === 11" class="text-left">
+          <div v-if="currentStep === 12" class="text-left">
             <h2 class="black center">Owner Information</h2>
             <h5 class="mt-4 black text-left text-md-center">Name</h5>
             <div class="container">
               <div class="row justify-content-center">
                   <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.name !== '')}" v-model="answers.information.name" type="text" placeholder="Your Name">
-              </div>
-            </div>
-            
-            <h5 class="mt-4 black text-left text-md-center">E-Mail</h5>
-            <div class="container">
-              <div class="row justify-content-center">
-                  <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
               </div>
             </div>
 
@@ -249,7 +260,7 @@
 
         <!-- Step 12 -->
         <transition name="fade">
-          <div v-if="currentStep === 12" class="p-5 yellow-12">
+          <div v-if="currentStep === 13" class="p-5 yellow-12">
             
             <div class="row justify-content-center">
               <div class="col-8">
@@ -267,7 +278,7 @@
 
         <!-- Step 13 -->
         <transition name="fade">
-            <div v-if="currentStep === 13" class="p-1 p-md-5 yellow-12">
+            <div v-if="currentStep === 14" class="p-1 p-md-5 yellow-12">
               
               <div class="row justify-content-center">
                 <div class="col-12 col-md-8">

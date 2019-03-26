@@ -47,12 +47,22 @@ var app = new Vue({
         city: '',
         zip: ''
       },
-      eligable: null
+      eligable: 0
     },
     dateEmpty: true
   },
   mounted() {
     this.industryData.sort()
+
+    firebase.auth().signInWithEmailAndPassword("info@fullcircle-cms.com", "thisisatest").then(function(msg) {
+      console.log("Logged In Successfully")
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+
   },
   computed: {
     checkDate() {
@@ -76,27 +86,34 @@ var app = new Vue({
     credit(score) {
       this.answers.credit = score
       this.currentStep += 1
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     revenue(score) {
       this.currentStep += 1
       this.answers.revenue = score
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     selectMonth(month) {
       this.answers.date.month = month
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     selectState(state) {
       this.answers.state = state
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     industry(industry) {
       this.answers.industry = industry
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     notStarted() {
       this.answers.date.started = false
       this.currentStep += 1
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     nonApply() {
       this.answers.about = ['Non Apply']
       this.currentStep += 1
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     selectPurpose(purpose) {
       if(this.answers.purpose.length !== 0) {
@@ -104,6 +121,7 @@ var app = new Vue({
         if(index === -1) this.answers.purpose.push(purpose)
         else this.answers.purpose.splice(index, 1)
       } else this.answers.purpose.push(purpose)
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     currentAdvance(yesno) {
       this.answers.currentAdvance.bool = yesno
@@ -111,10 +129,12 @@ var app = new Vue({
         this.currentStep += 1
       }
       else this.enterAmount = true
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     selectType(type) {
       this.answers.type = type
       this.currentStep += 1
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     selectAbout(about) {
       if(this.answers.about.length !== 0) {
@@ -122,23 +142,28 @@ var app = new Vue({
         if(index === -1) this.answers.about.push(about)
         else this.answers.about.splice(index, 1)
       } else this.answers.about.push(about)
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     isValid() {
+      firebase.database().ref("answers/" + timestamp).update(this.answers)
+      console.log(this.answers)
       if(this.currentStep === 1) {
         if(this.answers.seeking !== null) this.currentStep += 1
-      } else if(this.currentStep === 3) {
+      } else if(this.currentStep === 2) {
+        if(this.answers.information.mail !== '') this.currentStep += 1
+      } else if(this.currentStep === 4) {
         if(this.answers.date.month !== "Choose a month" && this.answers.date.year !== "") this.currentStep += 1
-      } else if(this.currentStep === 5) {
-        if(this.answers.industry !== "Choose an industry") this.currentStep += 1
       } else if(this.currentStep === 6) {
-        if(this.answers.about.length !== 0) this.currentStep += 1
+        if(this.answers.industry !== "Choose an industry") this.currentStep += 1
       } else if(this.currentStep === 7) {
-        if(this.answers.state !== "Choose a state") this.currentStep += 1
+        if(this.answers.about.length !== 0) this.currentStep += 1
       } else if(this.currentStep === 8) {
+        if(this.answers.state !== "Choose a state") this.currentStep += 1
+      } else if(this.currentStep === 9) {
         if(this.answers.purpose.length !== 0) this.currentStep += 1
-      } else if(this.currentStep === 10) {
-        if(this.answers.currentAdvance.bool === "Yes" && this.answers.currentAdvance.amount !== 0) this.currentStep += 1
       } else if(this.currentStep === 11) {
+        if(this.answers.currentAdvance.bool === "Yes" && this.answers.currentAdvance.amount !== 0) this.currentStep += 1
+      } else if(this.currentStep === 12) {
         if(this.answers.information.name !== '' && this.answers.information.mail !== '' && this.answers.information.phone !== '' && this.answers.information.address !== '' && this.answers.information.city !== '' && this.answers.information.zip !== '') {
           // console.log(this.answers.credit)
           var eligable = 0
@@ -175,16 +200,7 @@ var app = new Vue({
 
           let self = this
 
-          firebase.auth().signInWithEmailAndPassword("joweidner@live.com", "wei92dner").then(function(msg) {
-            console.log("Logged In Successfully")
-            firebase.database().ref("answers/" + timestamp).set(self.answers)
-            firebase.database().ref("last").update(self.answers)
-          }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // ...
-          });
+          firebase.database().ref("last").update(this.answers)
           this.currentStep += 1
         }
       }

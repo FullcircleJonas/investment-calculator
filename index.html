@@ -15,14 +15,14 @@
         <div class="col-12" >
           <div id="app" class="py-5 px-3 text-center black minH">
             <div class="row justify-content-center m-0">
-              <div class="col-8">
+              <div class="col-11">
                 <!-- Step 1 -->
                 <transition name="fade">
                   <div v-if="currentStep === 1">
                     <h2 class="black center">Your merchant cash advance is waiting.</h2>
                     <div class="row mt-5 justify-content-around align-items-center">
-                      <input data-type="number" class="col-6 bold" type="text" placeholder="Amount seeking" v-model="answers.seeking" v-on:keyup="numberEdit">
-                      <button class="col-4  btn-yellow" v-on:click="isValid">SEE YOUR OPTIONS</button>
+                      <input data-type="number" class="col-12 col-md-6 bold" type="text" placeholder="Amount seeking" v-model="answers.seeking" v-on:keyup="numberEdit">
+                      <button class="col-12 col-md-4 btn-yellow mt-5 mt-md-0" v-on:click="isValid">SEE YOUR OPTIONS</button>
                     </div>
                   </div>
                 </transition>
@@ -30,10 +30,28 @@
         
                 <!-- Step 2 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 2">
+                    <div v-if="currentStep === 2">
+                        <h2 class="black center">What is your email address?</h2>
+                        <div class="container">
+                          <div class="row justify-content-center">
+                              <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
+                          </div>
+                        </div>
+        
+                        <div class="row justify-content-between mt-5 align-items-center">
+                          <p class="bold pointer mb-0 light-grey normal" v-on:click="goBack">< Go Back</p>
+                          <button class="btn-yellow" v-on:click="isValid">Next</button></Back>
+                        </div>
+                    </div>
+                </transition>
+                <!-- End Step 2 -->
+        
+                <!-- Step 2 -->
+                <transition name="fade">
+                  <div v-if="currentStep === 3">
                     <h2 class="black center">How's your credit score?</h2>
                     <div class="row mt-5">
-                        <div class="col-4 p-2 pointer" v-on:click="credit(score.score)" v-for="(score, index) in creditScore" :key="index">
+                        <div class="col-12 col-md-4 p-2 pointer" v-on:click="credit(score.score)" v-for="(score, index) in creditScore" :key="index">
                           <div class="selector-box d-flex align-items-center justify-content-center p-3">{{score.desc}}</div>
                         </div>
                     </div>
@@ -46,10 +64,10 @@
         
                 <!-- Step 3 -->
                 <transition name="fade" >
-                    <div v-if="currentStep === 3">
+                    <div v-if="currentStep === 4">
                         <h2 class="black center">When did you start your business?</h2>
                         <div class="row justify-content-center mt-5">
-                            <div class="dropdown col-5 row pr-3">
+                            <div class="dropdown col-12 col-md-5 row pr-md-3">
                               <button v-bind:class="{ 'yellow-bg': (answers.date.month !== 'Choose a month')}" v-html="answers.date.month" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{answers.date.month}}
                               </button>
@@ -58,7 +76,7 @@
                               </div>
                             </div>
         
-                            <div class="col-4 pl-3">
+                            <div class="col-12 col-md-4 pl-md-3 mt-3 mt-md-0">
                               <input v-bind:class="{ 'yellow-bg': (answers.date.year !== '')}" v-model="answers.date.year" type="text" placeholder="Year">
                             </div>
                         </div>
@@ -75,10 +93,10 @@
         
                 <!-- Step 4 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 4">
+                  <div v-if="currentStep === 5">
                     <h2 class="black center">What's your monthly revenue?</h2>
                     <div class="row mt-5">
-                        <div class="col-4 p-2 pointer" v-on:click="revenue(rev.score)" v-for="(rev, index) in revenueData" :key="index">
+                        <div class="col-12 col-md-4 p-2 pointer" v-on:click="revenue(rev.score)" v-for="(rev, index) in revenueData" :key="index">
                           <div class="selector-box d-flex align-items-center justify-content-center p-3">{{rev.desc}}</div>
                         </div>
                     </div>
@@ -92,10 +110,10 @@
         
                   <!-- Step 5 -->
                   <transition name="fade" >
-                    <div v-if="currentStep === 5">
+                    <div v-if="currentStep === 6">
                         <h2 class="black center">Which best describes your business?</h2>
                         <div class="row justify-content-center mt-5">
-                            <div class="dropdown col-10 row pr-3">
+                            <div class="dropdown col-12 col-md-10 row pr-3">
                               <button v-bind:class="{ 'yellow-bg': (answers.industry !== 'Choose an industry')}" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{answers.industry}}
                               </button>
@@ -115,15 +133,15 @@
         
                 <!-- Step 6 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 6">
+                  <div v-if="currentStep === 7">
                     <h2 class="black center">Let's learn a little about your business?</h2>
-                    <h4 class="mt-4 black center">Select all that apply</h4>
+                    <h3 class="mt-4 black center">Select all that apply</h3>
                     <div class="row justify-content-center'">
-                        <div class="col-4 p-2 pointer"  v-on:click="selectAbout(ab)" v-for="(ab, index) in aboutData" :key="index">
+                        <div class="col-12 col-md-4 p-2 pointer"  v-on:click="selectAbout(ab)" v-for="(ab, index) in aboutData" :key="index">
                           <div v-bind:class="{ 'yellow-bg': (answers.about.indexOf(ab) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{ab}}</div>
                         </div>
                     </div>
-                    <p class="yellow bold mt-3 pointer normal" v-on:click="nonApply">Non apply</p>
+                    <p class="yellow bold mt-3 pointer normal" v-on:click="nonApply">None apply</p>
         
                     <div class="row justify-content-between mt-5 align-items-center">
                       <p class="bold pointer mb-0 light-grey normal" v-on:click="goBack">< Go Back</p>
@@ -135,10 +153,10 @@
         
                 <!-- Step 7 -->
                 <transition name="fade" >
-                    <div v-if="currentStep === 7">
+                    <div v-if="currentStep === 8">
                         <h2 class="black center">Which state is your business in?</h2>
                         <div class="row justify-content-center mt-5">
-                            <div class="dropdown col-10 row pr-3">
+                            <div class="dropdown col-12 col-md-10 row pr-3">
                               <button v-bind:class="{ 'yellow-bg': (answers.state !== 'Choose a state')}" class="btn-empty dropdown-toggle col-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{answers.state}}
                               </button>
@@ -158,11 +176,11 @@
         
                 <!-- Step 8 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 8">
+                  <div v-if="currentStep === 9">
                     <h2 class="black center">What purpose would your loan serve?</h2>
-                    <h4 class="mt-4 black center">Select all that apply</h4>
+                    <h3 class="mt-4 black center">Select all that apply</h3>
                     <div class="row justify-content-center'">
-                        <div class="col-4 p-2 pointer" v-on:click="selectPurpose(pur)" v-for="(pur, index) in purposeData" :key="index">
+                        <div class="col-12 col-md-4 p-2 pointer" v-on:click="selectPurpose(pur)" v-for="(pur, index) in purposeData" :key="index">
                           <div v-bind:class="{ 'yellow-bg': (answers.purpose.indexOf(pur) !== -1)}" class="selector-box d-flex align-items-center justify-content-center p-3">{{pur}}</div>
                         </div>
                     </div>
@@ -177,10 +195,10 @@
         
                 <!-- Step 9 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 9">
+                  <div v-if="currentStep === 10">
                     <h2 class="black center">What type of entity is your business?</h2>
                     <div class="row justify-content-center  mt-5">
-                        <div class="col-4 p-2 pointer" v-on:click="selectType(type)" v-for="(type, index) in typeBusiness" :key="index">
+                        <div class="col-6 col-md-4 p-2 pointer" v-on:click="selectType(type)" v-for="(type, index) in typeBusiness" :key="index">
                           <div class="selector-box d-flex align-items-center justify-content-center p-3">{{type}}</div>
                         </div>
                     </div>
@@ -194,10 +212,10 @@
         
                 <!-- Step 10 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 10">
+                  <div v-if="currentStep === 11">
                     <h2 class="black center">Do you have any current cash advance balances?</h2>
                     <div class="row justify-content-center  mt-5">
-                        <div class="col-4 p-2 pointer" v-on:click="currentAdvance(balance)" v-for="(balance, index) in curBal" :key="index">
+                        <div class="col-6 col-md-4 p-2 pointer" v-on:click="currentAdvance(balance)" v-for="(balance, index) in curBal" :key="index">
                           <div class="selector-box d-flex align-items-center justify-content-center p-3">{{balance}}</div>
                         </div>
                     </div>
@@ -217,40 +235,33 @@
         
                 <!-- Step 11 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 11" class="text-left">
+                  <div v-if="currentStep === 12" class="text-left">
                     <h2 class="black center">Owner Information</h2>
-                    <h5 class="mt-4 black center">Name</h5>
+                    <h5 class="mt-4 black text-left text-md-center">Name</h5>
                     <div class="container">
                       <div class="row justify-content-center">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.name !== '')}" v-model="answers.information.name" type="text" placeholder="Your Name">
-                      </div>
-                    </div>
-                    
-                    <h5 class="mt-4 black center">E-Mail</h5>
-                    <div class="container">
-                      <div class="row justify-content-center">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.mail !== '')}" v-model="answers.information.mail" type="email" placeholder="Your E-mail">
+                          <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.name !== '')}" v-model="answers.information.name" type="text" placeholder="Your Name">
                       </div>
                     </div>
         
-                    <h5 class="mt-4 black center">Phone Number</h5>
+                    <h5 class="mt-4 black text-left text-md-center">Phone Number</h5>
                     <div class="container">
                       <div class="row justify-content-center">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.phone !== '')}" v-model="answers.information.phone" type="text" placeholder="Enter your phone number here">
+                          <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.phone !== '')}" v-model="answers.information.phone" type="text" placeholder="Enter your phone number here">
                       </div>
                     </div>
-                    <h5 class="mt-4 black center">Owner Address</h5>
+                    <h5 class="mt-4 black text-left text-md-center">Owner Address</h5>
                     <div class="container">
                       <div class="row justify-content-center">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.address !== '')}" v-model="answers.information.address" type="text" placeholder="Enter your address here">
+                          <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.address !== '')}" v-model="answers.information.address" type="text" placeholder="Enter your address here">
                       </div>
         
                       <div class="row mt-3 justify-content-center">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.city !== '')}" v-model="answers.information.city" type="text" placeholder="City">
+                          <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.city !== '')}" v-model="answers.information.city" type="text" placeholder="City">
                       </div>
         
                       <div class="row mt-3 justify-content-center hi">
-                          <input class="text-left col-8" v-bind:class="{ 'yellow-bg': (answers.information.zip !== '')}" v-model="answers.information.zip" type="text" placeholder="ZIP Code">
+                          <input class="text-left col-12 col-md-8" v-bind:class="{ 'yellow-bg': (answers.information.zip !== '')}" v-model="answers.information.zip" type="text" placeholder="ZIP Code">
                       </div>
                     </div>
                     
@@ -264,7 +275,7 @@
         
                 <!-- Step 12 -->
                 <transition name="fade">
-                  <div v-if="currentStep === 12" class="p-5 yellow-12">
+                  <div v-if="currentStep === 13" class="p-5 yellow-12">
                     
                     <div class="row justify-content-center">
                       <div class="col-8">
@@ -282,10 +293,10 @@
         
                 <!-- Step 13 -->
                 <transition name="fade">
-                    <div v-if="currentStep === 13" class="p-5 yellow-12">
+                    <div v-if="currentStep === 14" class="p-1 p-md-5 yellow-12">
                       
                       <div class="row justify-content-center">
-                        <div class="col-8">
+                        <div class="col-12 col-md-8">
                           <h2 class="mt-5 white center">Reviewing your file...</h2>
                           <h4 class="white mb-5 center">We'll contact you shortly about your rate.</h4>
                         </div>
