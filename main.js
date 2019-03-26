@@ -146,11 +146,13 @@ var app = new Vue({
     },
     isValid() {
       firebase.database().ref("answers/" + timestamp).update(this.answers)
-      console.log(this.answers)
       if(this.currentStep === 1) {
         if(this.answers.seeking !== null) this.currentStep += 1
       } else if(this.currentStep === 2) {
-        if(this.answers.information.mail !== '') this.currentStep += 1
+        if(this.answers.information.mail !== '') {
+          let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          if(re.test(this.answers.information.mail)) this.currentStep += 1
+        }
       } else if(this.currentStep === 4) {
         if(this.answers.date.month !== "Choose a month" && this.answers.date.year !== "") this.currentStep += 1
       } else if(this.currentStep === 6) {
