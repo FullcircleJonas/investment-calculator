@@ -85,7 +85,7 @@ var app = new Vue({
     },
     credit(score) {
       this.answers.credit = score
-      this.currentStep += 1
+      this.currentStep += 2
       firebase.database().ref("answers/" + timestamp).update(this.answers)
     },
     revenue(score) {
@@ -158,7 +158,7 @@ var app = new Vue({
       } else if(this.currentStep === 6) {
         if(this.answers.industry !== "Choose an industry") this.currentStep += 1
       } else if(this.currentStep === 7) {
-        if(this.answers.about.length !== 0) this.currentStep += 1
+        if(this.answers.about.length !== 0) this.currentStep += 2
       } else if(this.currentStep === 8) {
         if(this.answers.state !== "Choose a state") this.currentStep += 1
       } else if(this.currentStep === 9) {
@@ -166,7 +166,7 @@ var app = new Vue({
       } else if(this.currentStep === 11) {
         if(this.answers.currentAdvance.bool === "Yes" && this.answers.currentAdvance.amount !== 0) this.currentStep += 1
       } else if(this.currentStep === 12) {
-        if(this.answers.information.name !== '' && this.answers.information.mail !== '' && this.answers.information.phone !== '' && this.answers.information.address !== '' && this.answers.information.city !== '' && this.answers.information.zip !== '') {
+        if(this.answers.information.name !== '' && this.answers.information.phone !== '') {
           // console.log(this.answers.credit)
           var eligable = 0
           if(this.answers.credit === 499) { 
@@ -199,9 +199,6 @@ var app = new Vue({
           
           this.eligableAmount = eligable
           this.answers.eligable = eligable
-
-          let self = this
-
           firebase.database().ref("last").update(this.answers)
           this.currentStep += 1
         }
