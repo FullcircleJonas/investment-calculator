@@ -158,9 +158,9 @@ var app = new Vue({
       } else if(this.currentStep === 6) {
         if(this.answers.industry !== "Choose an industry") this.currentStep += 1
       } else if(this.currentStep === 7) {
-        if(this.answers.about.length !== 0) this.currentStep += 2
+        if(this.answers.about.length !== 0) this.currentStep += 1
       } else if(this.currentStep === 8) {
-        if(this.answers.state !== "Choose a state") this.currentStep += 1
+        if(this.answers.state !== "Choose a state") this.currentStep = this.currentStep + 2
       } else if(this.currentStep === 9) {
         if(this.answers.purpose.length !== 0) this.currentStep += 1
       } else if(this.currentStep === 11) {
